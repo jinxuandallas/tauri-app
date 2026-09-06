@@ -4,10 +4,15 @@ import { invoke } from "@tauri-apps/api/core";
 
 const greetMsg = ref("");
 const name = ref("");
+const testMsg = ref("");
 
 async function greet() {
   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
   greetMsg.value = await invoke("greet", { name: name.value });
+}
+
+async function test_turso() {
+  testMsg.value = await invoke("test_turso");
 }
 </script>
 
@@ -31,8 +36,11 @@ async function greet() {
     <form class="row" @submit.prevent="greet">
       <input id="greet-input" v-model="name" placeholder="Enter a name..." />
       <button type="submit">Greet</button>
+      <br/>
+      <button type="button" @click="test_turso">Test Turso</button>
     </form>
     <p>{{ greetMsg }}</p>
+    <br/><p>{{ testMsg }}</p>
   </main>
 </template>
 
