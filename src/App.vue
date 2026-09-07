@@ -40,7 +40,7 @@ async function test_turso() {
       <button type="button" @click="test_turso">Test Turso</button>
     </form>
     <p>{{ greetMsg }}</p>
-    <br/><p>{{ testMsg }}</p>
+    <p>{{ testMsg }}</p>
   </main>
 </template>
 
