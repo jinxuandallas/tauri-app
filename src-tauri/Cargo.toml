@@ -25,4 +25,4 @@ serde_json = "1"
 dotenv = "0.15.0"
 tokio = { version = "1.53.1", features = ["full"] }
 toasty = { version = "0.10.0", features = [] }
-libsql = "0.9.30"
+libsql =  { version = "0.9.30", default-features = false, features = ["remote", "replication", "core"] }
