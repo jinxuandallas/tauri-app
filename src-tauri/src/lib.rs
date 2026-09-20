@@ -42,15 +42,27 @@ async fn test_turso(app_handle: tauri::AppHandle) -> Result<String, String> {
 
     // 你的数据库连接代码保持不变
     let url = r"libsql://test-jinxuandallas.aws-ap-northeast-1.turso.io".to_string();
-    let auth_token = r"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9...".to_string(); // 你的 token
+    let auth_token = r"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODg3MDAzNTksImlkIjoiMDFhMDZhNDUtYjUwMS03OGMyLTlmZGEtYzE5YTRlNWM0Njg0Iiwia2lkIjoiZnB2eVZsSWFZQmp1NjgtYS1TX0R6Y2ttbTlCbWtweENWTjFiUmtyNFctVSIsInJpZCI6IjZlZmI4YmJhLTdkODgtNGM1OS1iMDJkLWQxYTU5YjZhNmE2OSJ9.BDDyi_-WtXAf1eaJYHboK0sRK-ePRsoNN8HHprYdvUpwEZ8AEBTcRWL70oJgecWkyHW6zZ39lAnWdF3zjexpCg".to_string(); // 你的 token
 
-    let _db = libsql::Builder::new_remote(url, auth_token)
+    let db = libsql::Builder::new_remote(url, auth_token)
         .build()
         .await
         .map_err(|e| format!("数据库连接失败: {}", e))?;
 
     println!("成功连接到 Turso 数据库！");
-    Ok("test".to_string())
+
+    let conn = db.connect().unwrap();
+
+    let mut result = String::new();
+    let mut rows = conn.query("select * from test1", ()).await.unwrap();
+    while let Some(row) = rows.next().await.unwrap() {
+        let name: String = row.get(1).unwrap();
+        let id = row.get::<i32>(0).unwrap();
+        println!("name: {}, id: {}", name, id);
+        result += &format!("name: {}, id: {}\n", name, id);
+    }
+
+    Ok(result)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
