@@ -32,7 +32,8 @@
       "icons/icon.ico"
     ],
     "resources": [
-          "cacert.pem"
+          "cacert.pem",
+          "resources/config.toml"
         ]
   }
 }
